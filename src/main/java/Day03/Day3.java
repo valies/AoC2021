@@ -23,19 +23,18 @@ public class Day3 {
                 }
             }
         }
-        int possibilities = input.length;
-        String gamma = "";
-        String epsilon = "";
-        for (Integer one: ones) {
-            if (one > possibilities/2) {
-                gamma = gamma + "1";
-                epsilon = epsilon + "0";
+        StringBuilder gamma = new StringBuilder();
+        StringBuilder epsilon = new StringBuilder();
+        for (int i = 0; i < ones.size(); i++) {
+            if (ones.get(i) > input.length/2) {
+                gamma.append("1");
+                epsilon.append("0");
             } else {
-                gamma = gamma + "0";
-                epsilon = epsilon + "1";
+                gamma.append("0");
+                epsilon.append("1");
             }
         }
-        return Integer.parseInt(gamma,2) * Integer.parseInt(epsilon, 2);
+        return Integer.parseInt(gamma.toString(),2) * Integer.parseInt(epsilon.toString(), 2);
     }
 
     public static int getResultOfPart2(File txtFile) {

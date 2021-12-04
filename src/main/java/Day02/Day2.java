@@ -52,7 +52,7 @@ public class Day2 {
     }
 
     public static void main(String[] args) {
-        File txtFile = new File("src/main/java/Day2/input.txt");
+        File txtFile = new File("src/main/java/Day02/input.txt");
         System.out.println("Part 1: " + getResultOfPart1(txtFile));
         System.out.println("Part 2: " + getResultOfPart2(txtFile));
     }
