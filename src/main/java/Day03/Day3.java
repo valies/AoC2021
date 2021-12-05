@@ -11,6 +11,7 @@ public class Day3 {
     public static int getResultOfPart1(File txtFile) {
         String[] input = FileReader.transformToStringArray(txtFile);
         ArrayList<Integer> ones = new ArrayList<>();
+
         for (int i = 0; i < input.length; i++) {
             String[] bits = input[i].split("(?!^)");
             for (int j = 0; j < bits.length; j++) {
@@ -18,6 +19,9 @@ public class Day3 {
                     ones.add(Integer.parseInt(bits[j]));
                 } else {
                     if (Objects.equals(bits[j], "1")) {
+                        if (ones.get(j) > input.length / 2) {
+                            break;
+                        }
                         ones.set(j, ones.get(j) + 1);
                     }
                 }
@@ -25,8 +29,8 @@ public class Day3 {
         }
         StringBuilder gamma = new StringBuilder();
         StringBuilder epsilon = new StringBuilder();
-        for (int i = 0; i < ones.size(); i++) {
-            if (ones.get(i) > input.length/2) {
+        for (Integer one : ones) {
+            if (one > input.length / 2) {
                 gamma.append("1");
                 epsilon.append("0");
             } else {
