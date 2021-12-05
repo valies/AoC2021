@@ -34,7 +34,7 @@ public class FileReader {
         return data.toArray(new Integer[]{});
     }
 
-    private static Scanner scanFile(File txtFile) {
+    public static Scanner scanFile(File txtFile) {
         Scanner scan = null;
         try {
             scan = new Scanner(txtFile);
