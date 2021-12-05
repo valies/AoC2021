@@ -19,7 +19,7 @@ public class Day3Test {
     public void day3TestPart2()
     {
         File txtFile = new File("src/test/java/Day03/input.txt");
-        int expected = 0;
+        int expected = 230;
         int actual = Day3.getResultOfPart2(txtFile);
         assertEquals(expected, actual);
     }
