@@ -9,18 +9,15 @@ import java.util.stream.Collectors;
 public class Day4 {
 
     private static int sumOfUnmarkedNumbers = 0;
-    private static int bingoCounter = 0;
     private static final int boardSize = 5;
-    private static int numberOfBoards;
-    private static int numberOfBoardsLeft;
 
     public static int getResultOfPart1(File txtFile) {
         String[] numbers = getNumbers(txtFile);
         List<String[]> boards = getBoards(txtFile);
-        numberOfBoards = boards.size() / boardSize;
+        int originalBoardsSize = boards.size();
         for (String number : numbers) {
             boards = markNumber(boards, number);
-            if(bingoCounter == 1) {
+            if(boards.size() < originalBoardsSize) {
                 return sumOfUnmarkedNumbers * Integer.parseInt(number);
             }
         }
@@ -30,11 +27,9 @@ public class Day4 {
     public static int getResultOfPart2(File txtFile) {
         String[] numbers = getNumbers(txtFile);
         List<String[]> boards = getBoards(txtFile);
-        numberOfBoards = boards.size() / boardSize;
-        numberOfBoardsLeft = numberOfBoards;
         for (String number : numbers) {
             boards = markNumber(boards, number);
-            if(numberOfBoardsLeft == 0) {
+            if(boards.size() / boardSize == 0) {
                 return sumOfUnmarkedNumbers * Integer.parseInt(number);
             }
         }
@@ -80,11 +75,9 @@ public class Day4 {
                 }
             }
             if (checkIsBingo(board)) {
-                bingoCounter += 1;
                 newBoards.removeAll(board);
             }
         }
-        numberOfBoardsLeft = newBoards.size() / boardSize;
         return newBoards;
     }
 
