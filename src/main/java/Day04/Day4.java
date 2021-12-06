@@ -60,7 +60,7 @@ public class Day4 {
 
     private static List<String[]> markNumber(List<String[]> boards, String number) {
         String hitPoint = number + ":0";
-        List<String[]> newBoards = new ArrayList<>(boards);;
+        List<String[]> newBoards = new ArrayList<>(boards);
         for (int i = 0; i < boards.size(); i += boardSize) {
             int start = (i / boardSize) * boardSize;
             int end = start + boardSize;
