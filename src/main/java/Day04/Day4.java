@@ -9,13 +9,32 @@ import java.util.stream.Collectors;
 public class Day4 {
 
     private static int sumOfUnmarkedNumbers = 0;
+    private static int bingoCounter = 0;
+    private static final int boardSize = 5;
+    private static int numberOfBoards;
+    private static int numberOfBoardsLeft;
 
     public static int getResultOfPart1(File txtFile) {
         String[] numbers = getNumbers(txtFile);
-        ArrayList<String[]> boards = getBoards(txtFile);
+        List<String[]> boards = getBoards(txtFile);
+        numberOfBoards = boards.size() / boardSize;
         for (String number : numbers) {
             boards = markNumber(boards, number);
-            if(sumOfUnmarkedNumbers > 0) {
+            if(bingoCounter == 1) {
+                return sumOfUnmarkedNumbers * Integer.parseInt(number);
+            }
+        }
+        return 0;
+    }
+
+    public static int getResultOfPart2(File txtFile) {
+        String[] numbers = getNumbers(txtFile);
+        List<String[]> boards = getBoards(txtFile);
+        numberOfBoards = boards.size() / boardSize;
+        numberOfBoardsLeft = numberOfBoards;
+        for (String number : numbers) {
+            boards = markNumber(boards, number);
+            if(numberOfBoardsLeft == 0) {
                 return sumOfUnmarkedNumbers * Integer.parseInt(number);
             }
         }
@@ -44,31 +63,32 @@ public class Day4 {
         return boards;
     }
 
-    private static ArrayList<String[]> markNumber(ArrayList<String[]> boards, String number) {
-        int boardSize = 5;
-        ArrayList<String[]> newBoards = (ArrayList<String[]>) boards.clone();
+    private static List<String[]> markNumber(List<String[]> boards, String number) {
         String hitPoint = number + ":0";
-        for (int i = 0; i < boards.size(); i++) {
-            if(sumOfUnmarkedNumbers == 0) {
-                String[] markers = boards.get(i);
+        List<String[]> newBoards = new ArrayList<>(boards);;
+        for (int i = 0; i < boards.size(); i += boardSize) {
+            int start = (i / boardSize) * boardSize;
+            int end = start + boardSize;
+            List<String[]> board = boards.subList(start, end);
+            for (int m = 0; m < boardSize; m++) {
+                String[] markers = board.get(m);
                 for (int j = 0; j < markers.length; j++) {
                     if (Objects.equals(markers[j], hitPoint)) {
                         markers[j] = hitPoint.replace(":0", ":1");
-                        newBoards.set(i, markers);
-                        int start = (i / boardSize) * boardSize;
-                        int end = start + boardSize;
-                        List<String[]> markedBoard = boards.subList(start, end);
-                        checkIsBingo(markedBoard, number);
+                        board.set(m, markers);
                     }
                 }
-            } else {
-                break;
+            }
+            if (checkIsBingo(board)) {
+                bingoCounter += 1;
+                newBoards.removeAll(board);
             }
         }
+        numberOfBoardsLeft = newBoards.size() / boardSize;
         return newBoards;
     }
 
-    private static void checkIsBingo(List<String[]> board, String lastNumber) {
+    private static boolean checkIsBingo(List<String[]> board) {
         List<String[]> rowMatches = board.stream()
                 .filter(x -> Arrays.stream(x)
                         .allMatch(y -> y.endsWith(":1")))
@@ -79,6 +99,7 @@ public class Day4 {
                         .allMatch(y -> y.endsWith(":1")))
                 .collect(Collectors.toList());
         if (rowMatches.size() > 0 || columnMatches.size() > 0) {
+            sumOfUnmarkedNumbers = 0;
             for (String[] strings : board) {
                 for (String string : strings) {
                     if (string.endsWith(":0")) {
@@ -86,7 +107,9 @@ public class Day4 {
                     }
                 }
             }
+            return true;
         }
+        return false;
     }
 
     public static List<String[]> transpose(List<String[]> board) {
@@ -100,10 +123,6 @@ public class Day4 {
             transposedBoard.add(column.toString().split(" "));
         }
         return transposedBoard;
-    }
-
-    public static int getResultOfPart2(File txtFile) {
-        return 0;
     }
 
     public static void main(String[] args) {
