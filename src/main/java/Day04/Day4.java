@@ -75,6 +75,14 @@ public class Day4 {
                 }
             }
             if (checkIsBingo(board)) {
+                sumOfUnmarkedNumbers = 0;
+                for (String[] strings : board) {
+                    for (String string : strings) {
+                        if (string.endsWith(":0")) {
+                            sumOfUnmarkedNumbers += Integer.parseInt(string.replace(":0", ""));
+                        }
+                    }
+                }
                 newBoards.removeAll(board);
             }
         }
@@ -92,14 +100,6 @@ public class Day4 {
                         .allMatch(y -> y.endsWith(":1")))
                 .collect(Collectors.toList());
         if (rowMatches.size() > 0 || columnMatches.size() > 0) {
-            sumOfUnmarkedNumbers = 0;
-            for (String[] strings : board) {
-                for (String string : strings) {
-                    if (string.endsWith(":0")) {
-                        sumOfUnmarkedNumbers += Integer.parseInt(string.replace(":0", ""));
-                    }
-                }
-            }
             return true;
         }
         return false;
