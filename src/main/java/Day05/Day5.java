@@ -9,10 +9,12 @@ import java.util.Scanner;
 
 public class Day5 {
 
+    private static int highest;
+
     public static int getResultOfPart1(File txtFile) {
         ArrayList<String[]> ranges = getRanges(txtFile);
         int[][] allPoints = getAllPoints(ranges);
-        int[][] grid = setUpGrid(10, 10); //TODO: get this info from the data
+        int[][] grid = setUpGrid(highest + 1, highest + 1); //TODO: get this info from the data
         grid = fillGrid(grid, allPoints);
         int counter = 0;
         for (int i = 0; i < grid[0].length; i++) {
@@ -41,29 +43,40 @@ public class Day5 {
 
     private static int[][] getAllPoints(ArrayList<String[]> ranges) {
         ArrayList<int[]> fullRanges = new ArrayList<>();
+        highest = 0;
         for (String[] range : ranges) {
-            int x1 = Integer.parseInt(range[0].substring(0, 1));
-            int y1 = Integer.parseInt(range[0].substring(2, 3));
-            int x2 = Integer.parseInt(range[1].substring(0, 1));
-            int y2 = Integer.parseInt(range[1].substring(2, 3));
-            if (x1 == x2 || y1 == y2) {
-                int minStart = x1;
-                int maxStart = x2;
-                if (x1 > x2) {
-                    minStart = x2;
-                    maxStart = x1;
-                }
-                for (int i = minStart; i <= maxStart; i++) {
-                    int minStop = Integer.parseInt(range[0].substring(2, 3));
-                    int maxStop = Integer.parseInt(range[1].substring(2, 3));
-                    if (minStop > maxStop) {
-                        minStop = Integer.parseInt(range[1].substring(2, 3));
-                        maxStop = Integer.parseInt(range[0].substring(2, 3));
+            try {
+                int x1 = Integer.parseInt(range[0].split(":")[0]);
+                int y1 = Integer.parseInt(range[0].split(":")[1]);
+                int x2 = Integer.parseInt(range[1].split(":")[0]);
+                int y2 = Integer.parseInt(range[1].split(":")[1]);
+                if (x1 == x2 || y1 == y2) {
+                    int minStart = x1;
+                    int maxStart = x2;
+                    if (x1 > x2) {
+                        minStart = x2;
+                        maxStart = x1;
                     }
-                    for (int j = minStop; j <= maxStop; j++) {
-                        fullRanges.add(new int[]{i, j});
+                    for (int i = minStart; i <= maxStart; i++) {
+                        int minStop = Integer.parseInt(range[0].split(":")[1]);
+                        int maxStop = Integer.parseInt(range[1].split(":")[1]);
+                        if (maxStop > highest) {
+                            highest = maxStop;
+                        }
+                        if (maxStart > highest) {
+                            highest = maxStart;
+                        }
+                        if (minStop > maxStop) {
+                            minStop = Integer.parseInt(range[1].split(":")[0]);
+                            maxStop = Integer.parseInt(range[0].split(":")[0]);
+                        }
+                        for (int j = minStop; j <= maxStop; j++) {
+                            fullRanges.add(new int[]{i, j});
+                        }
                     }
                 }
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
         int[][] points = new int[fullRanges.size()][2];
@@ -89,7 +102,7 @@ public class Day5 {
 
     public static void main(String[] args) {
         File txtFile = new File("src/main/java/Day05/input.txt");
-        System.out.println("Part 1: " + getResultOfPart1(txtFile));
+        System.out.println("Part 1: " + getResultOfPart1(txtFile)); //7003 is too low
         //System.out.println("Part 2: " + getResultOfPart2(txtFile));
     }
 }
