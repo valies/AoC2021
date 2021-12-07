@@ -14,7 +14,7 @@ public class Day5 {
     public static int getResultOfPart1(File txtFile) {
         ArrayList<String[]> ranges = getRanges(txtFile);
         int[][] allPoints = getAllPoints(ranges);
-        int[][] grid = setUpGrid(highest + 1, highest + 1); //TODO: get this info from the data
+        int[][] grid = setUpGrid(highest + 1, highest + 1);
         grid = fillGrid(grid, allPoints);
         int counter = 0;
         for (int i = 0; i < grid[0].length; i++) {
