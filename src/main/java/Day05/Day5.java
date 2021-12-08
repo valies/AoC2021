@@ -67,8 +67,8 @@ public class Day5 {
                             highest = maxStart;
                         }
                         if (minStop > maxStop) {
-                            minStop = Integer.parseInt(range[1].split(":")[0]);
-                            maxStop = Integer.parseInt(range[0].split(":")[0]);
+                            minStop = Integer.parseInt(range[1].split(":")[1]);
+                            maxStop = Integer.parseInt(range[0].split(":")[1]);
                         }
                         for (int j = minStop; j <= maxStop; j++) {
                             fullRanges.add(new int[]{i, j});
@@ -102,7 +102,7 @@ public class Day5 {
 
     public static void main(String[] args) {
         File txtFile = new File("src/main/java/Day05/input.txt");
-        System.out.println("Part 1: " + getResultOfPart1(txtFile)); //7003 is too low
-        //System.out.println("Part 2: " + getResultOfPart2(txtFile));
+        System.out.println("Part 1: " + getResultOfPart1(txtFile));
+        System.out.println("Part 2: " + getResultOfPart2(txtFile));
     }
 }
